@@ -2,6 +2,7 @@
 #define WIN_CONNECT_H
 
 #include <QDialog>
+#include <QAbstractButton>
 
 namespace Ui {
 class win_connect;
@@ -14,6 +15,12 @@ class win_connect : public QDialog
 public:
     explicit win_connect(QWidget *parent = 0);
     ~win_connect();
+
+signals:
+   void  connectToServer(QString,QString,QString,QString);
+
+private slots:
+    void on_buttonBox_clicked(QAbstractButton *button);
 
 private:
     Ui::win_connect *ui;
