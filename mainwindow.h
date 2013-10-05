@@ -44,8 +44,6 @@ signals:
 
 protected:
 
-  virtual void 	keyPressEvent ( QKeyEvent * event );
-
 
 private:
     QColor *myName;

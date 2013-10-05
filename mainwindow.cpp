@@ -1,7 +1,6 @@
 #include <QTcpSocket>
 #include <QDebug>
 #include <QTime>
-#include <QKeyEvent>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "win_connect.h"
@@ -54,7 +53,6 @@ void MainWindow::connectToServer(QString name, QString addrServ, QString portSer
             encrypt=true;
             ui->act_crypt->setEnabled(true);
             qDebug()<<"crypt on";
-
         }
         else
         {
@@ -65,11 +63,9 @@ void MainWindow::connectToServer(QString name, QString addrServ, QString portSer
         tcpSocket->connectTo(addrServ,(quint16) portServ.toInt());
         //tcpSocket->connectToHost(addrServ,(quint16) portServ.toInt());
         ui->statusBar->showMessage("Подключаемся к "+addrServ);
-
     }
     else
         qDebug()<<"что то не так!";
-
 }
 
 void MainWindow::messageToGui(int kod, QString name, QString mess)
@@ -87,16 +83,15 @@ void MainWindow::messageToGui(int kod, QString name, QString mess)
         out->insertPlainText("<"+name+">");
         break;
     case 2:
-        qDebug()<<"[p";
+        qDebug()<<"уведомление о новом участнике";
         out->setTextColor(*myName);
         out->insertPlainText("<"+name+">");
         break;
     case 3:
 
         break;
-
     case 20:
-        qDebug()<<"system mess";
+        qDebug()<<"обычное сообщение";
         if(name==tcpSocket->name)
             out->setTextColor(*myName);
         else
@@ -107,15 +102,8 @@ void MainWindow::messageToGui(int kod, QString name, QString mess)
         qDebug()<<"crypt message";
         break;
     }
-
     out->setTextColor(QColor(Qt::black));
-    qDebug()<<"mess";
     out->insertPlainText(mess+"\n");
-
-
-
-
-
 }
 
 void MainWindow::getMess(int i, QString mess)
@@ -156,7 +144,6 @@ void MainWindow::deleteUser(QString name)
     for(int i=0;i<ui->lw_users->count();++i)
         if (ui->lw_users->item(i)->text()==name)
             ui->lw_users->takeItem(i);
-
 }
 
 
@@ -166,7 +153,6 @@ void MainWindow::on_act_connect_triggered()
     connect(conn,SIGNAL(connectToServer(QString,QString,QString,QString)),
             this,SLOT(connectToServer(QString,QString,QString,QString)));
     conn->show();
-
 }
 
 void MainWindow::getText(QString text)
@@ -182,7 +168,6 @@ void MainWindow::on_act_disconnect_triggered()
         tcpSocket->closeConnection();
         ui->act_disconnect->setEnabled(false);
         ui->statusBar->showMessage("Отключились от сервера");
-        //  ui->wd_out->setEnabled(false);
         ui->te_input->setEnabled(false);
     }
 
@@ -196,20 +181,6 @@ void MainWindow::on_act_test_triggered()
         ui->mainToolBar->hide();
 }
 
-void MainWindow::keyPressEvent(QKeyEvent *event)
-{
-//    if ( event->key() == Qt::Key_Return)
-//    {
-//        qDebug()<<"Hажата ентер";
-//        if(!(event->modifiers() & Qt::CTRL))
-//        {
-
-//            emit sendMessage(ui->te_input->toPlainText());
-//            ui->te_input->clear();
-//        }
-
-//    }
-}
 
 void MainWindow::on_act_crypt_triggered()
 {
