@@ -15,11 +15,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     win_connect.cpp \
-    client.cpp
+    client.cpp \
+    blowfish.cpp
 
 HEADERS  += mainwindow.h \
     win_connect.h \
-    client.h
+    client.h \
+    blowfish.h
 
 FORMS    += mainwindow.ui \
     win_connect.ui
