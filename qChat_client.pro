@@ -17,13 +17,15 @@ SOURCES += main.cpp\
     win_connect.cpp \
     client.cpp \
     blowfish.cpp \
-    settings.cpp
+    settings.cpp \
+    messinput.cpp
 
 HEADERS  += mainwindow.h \
     win_connect.h \
     client.h \
     blowfish.h \
-    settings.h
+    settings.h \
+    messinput.h
 
 FORMS    += mainwindow.ui \
     win_connect.ui \

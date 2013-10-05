@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(tcpSocket,SIGNAL(getMessage(int,QString)),this,SLOT(getMess(int,QString)));
     connect(tcpSocket,SIGNAL(disconnected()),this,SLOT(on_act_disconnect_triggered()));
     connect(tcpSocket,SIGNAL(delUser(QString)),this,SLOT(deleteUser(QString)));
+    connect(ui->te_input,SIGNAL(giveText(QString)),this,SLOT(getText(QString)));
 
     //<--here
 
@@ -168,6 +169,11 @@ void MainWindow::on_act_connect_triggered()
 
 }
 
+void MainWindow::getText(QString text)
+{
+    emit sendMessage(text);
+}
+
 void MainWindow::on_act_disconnect_triggered()
 {
     if(tcpSocket->getRuning())
@@ -192,14 +198,17 @@ void MainWindow::on_act_test_triggered()
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
-    if ( event->key() == Qt::Key_Return) {
-        if(event->modifiers() & Qt::CTRL)
-        {
-            qDebug()<<"Hажата ентер";
-            emit sendMessage(ui->te_input->toPlainText());
-            ui->te_input->clear();
-        }
-    }
+//    if ( event->key() == Qt::Key_Return)
+//    {
+//        qDebug()<<"Hажата ентер";
+//        if(!(event->modifiers() & Qt::CTRL))
+//        {
+
+//            emit sendMessage(ui->te_input->toPlainText());
+//            ui->te_input->clear();
+//        }
+
+//    }
 }
 
 void MainWindow::on_act_crypt_triggered()

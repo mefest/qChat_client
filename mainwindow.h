@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "blowfish.h"
+#include "messinput.h"
 
 class QTcpSocket;
 class client;
@@ -29,6 +30,7 @@ private slots:
     void addUsersToGui(QString name);
     void deleteUser(QString name);
     void on_act_connect_triggered();
+    void getText(QString text);
 
 
     void on_act_disconnect_triggered();

@@ -163,7 +163,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QTextEdit" name="te_input">
+     <widget class="messInput" name="te_input">
       <property name="enabled">
        <bool>false</bool>
       </property>
@@ -193,6 +193,9 @@
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
     <property name="title">
      <string>&amp;File</string>
     </property>
@@ -227,6 +230,21 @@
    </property>
    <property name="autoFillBackground">
     <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">
+QToolButton
+{
+border-style:none;
+}
+QToolButton:hover
+{
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(0, 0, 0, 0), stop:0.470899 rgba(230, 218, 255, 255), stop:1 rgba(0, 0, 0, 0));
+
+border: 1px solid black;
+min-height :24px;
+
+}</string>
    </property>
    <property name="movable">
     <bool>true</bool>
@@ -306,6 +324,12 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="resource.qrc">
      <normaloff>:/icon/resource/icon/encrypt.ico</normaloff>
@@ -314,6 +338,18 @@
    </property>
    <property name="text">
     <string>шифрование</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;вкл. шифрование&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="autoRepeat">
+    <bool>true</bool>
+   </property>
+   <property name="visible">
+    <bool>true</bool>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
    </property>
   </action>
   <action name="act_About">
@@ -331,6 +367,13 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>messInput</class>
+   <extends>QTextEdit</extends>
+   <header>messinput.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="resource.qrc"/>
  </resources>
