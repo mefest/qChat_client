@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include "blowfish.h"
 
 class QTcpSocket;
 class client;
@@ -17,6 +17,8 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    BLOWFISH_CTX *ctx;
+    bool encrypt;
 
 private slots:
     void connectToServer(QString name,QString addrServ,QString portServ, QString key);

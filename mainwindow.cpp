@@ -19,6 +19,9 @@ MainWindow::MainWindow(QWidget *parent) :
     otherName =new QColor(Qt::magenta);
     //tcpSocket=new QTcpSocket(this);
 
+    encrypt=false;
+    ctx= new BLOWFISH_CTX;
+
     connect(tcpSocket,SIGNAL(connected()),this,SLOT(connectSucces()));
     connect(tcpSocket,SIGNAL(disconnected()),this,SLOT(inable()));
     connect(tcpSocket,SIGNAL(addUsers(QString)),this,SLOT(addUsersToGui(QString)));
@@ -42,7 +45,7 @@ void MainWindow::connectToServer(QString name, QString addrServ, QString portSer
     {
         qDebug()<<"hi"<<addrServ<<portServ;
         if(key.length()>0 && key!="")
-            tcpSocket->encrypt=true;
+            tcpSocket->_encrypt=true;
         tcpSocket->name=name;
         tcpSocket->connectTo(addrServ,(quint16) portServ.toInt());
         //tcpSocket->connectToHost(addrServ,(quint16) portServ.toInt());
@@ -51,8 +54,15 @@ void MainWindow::connectToServer(QString name, QString addrServ, QString portSer
     }
     else
         qDebug()<<"что то не так!";
-
-
+    if (key.length()>6)
+    {
+    Blowfish_Init(ctx,&key,key.length());
+    tcpSocket->setCTX(ctx);
+    encrypt=true;
+    qDebug()<<"crypt on";
+    }
+    else
+        encrypt=false;
 }
 
 void MainWindow::messageToGui(int kod, QString name, QString mess)
@@ -85,6 +95,9 @@ void MainWindow::messageToGui(int kod, QString name, QString mess)
         else
             out->setTextColor(*otherName);
         out->insertPlainText("<"+name+">");
+        break;
+    case 21:
+        qDebug()<<"crypt message";
         break;
     }
 
@@ -132,7 +145,7 @@ void MainWindow::addUsersToGui(QString name)
 
 void MainWindow::deleteUser(QString name)
 {
-     messageToGui(1,name,"покинул чат");
+    messageToGui(1,name,"покинул чат");
     for(int i=0;i<ui->lw_users->count();++i)
         if (ui->lw_users->item(i)->text()==name)
             ui->lw_users->takeItem(i);

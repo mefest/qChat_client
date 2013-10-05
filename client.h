@@ -2,7 +2,7 @@
 #define CLIENT_H
 
 #include <QObject>
-
+#include "blowfish.h"
 class QTcpSocket;
 
 class client : public QObject
@@ -10,12 +10,17 @@ class client : public QObject
     Q_OBJECT
 public:
     QString name;
-    bool encrypt;
+    bool _encrypt;
+    BLOWFISH_CTX *ctx;
     explicit client(QObject *parent = 0);
     bool getRuning() const {return runing;}
     void connectTo(QString addr, quint16 port);
     void closeConnection();
     void send();
+    void setCTX(BLOWFISH_CTX *ctx);
+    QString decrypt(QVector <int> vec);
+    QVector<int> encrypt(QString str);
+
 
 signals:
     void delUser(QString name);

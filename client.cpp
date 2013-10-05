@@ -8,7 +8,7 @@ client::client(QObject *parent) :
     QObject(parent)
 {
     runing=false;
-
+    ctx=new BLOWFISH_CTX;
     _sok=new QTcpSocket(this);
     connect(_sok,SIGNAL(connected()),this,SLOT(connectSucces()));
     connect(_sok,SIGNAL(disconnected()),this,SLOT(inabled()));
@@ -38,6 +38,76 @@ void client::closeConnection()
     _sok->close();
 }
 
+void client::setCTX(BLOWFISH_CTX *ctx)
+{
+    client::ctx=ctx;
+}
+
+QString client::decrypt(QVector<int> vec)
+{
+    QString str;
+    unsigned long L = 1, R = 2;
+    QVector <int> vec2;
+    vec2.resize(0);
+    for(int i=0;i<(vec.size());i=i+2)
+    {
+        if(vec.size()-i>1)
+        {
+            L=vec.at(i);
+            R=vec.at(i+1);
+            Blowfish_Decrypt(ctx, &L, &R);
+            vec2.push_back(L);
+            vec2.push_back(R);
+        }
+        else
+        {
+
+            L=vec.at(i);
+            R=vec2.at(0);
+            Blowfish_Decrypt(ctx, &L, &R);
+            vec2.push_back(L);
+        }
+
+    }
+
+    for(int i=0;i<vec.size();++i)
+        str+=QChar(vec2[i]);
+    return str;
+}
+
+QVector<int> client::encrypt(QString str)
+{
+    QVector <int> vec;
+    if (str!=""){
+        vec.resize(0);
+        for(int i=0;i<str.length();++i)
+            vec.push_back(str.at(i).unicode());
+
+        unsigned long L = 1, R = 2;
+        for(int i=0;i<(vec.size());i=i+2)
+        {
+
+            if(vec.size()-i>1)
+            {
+                L=vec.at(i);
+                R=vec.at(i+1);
+                Blowfish_Encrypt(ctx, &L, &R);
+                vec[i]=(L);
+                vec[i+1]=(R);
+            }
+            else
+            {
+                L=vec.at(i);
+                R=32;
+                Blowfish_Encrypt(ctx, &L, &R);
+                vec[i]=(L);
+                vec.push_back(R);
+            }
+        }
+    }
+    return vec;
+}
+
 void client::inabled()
 {
     emit disconnected();
@@ -47,16 +117,23 @@ void client::inabled()
 
 void client::sendToServerMessage(QString mess)
 {
-    if(!encrypt){
-
-
-        QByteArray block;
-        QDataStream out(&block, QIODevice::WriteOnly);
+    QByteArray block;
+    QDataStream out(&block, QIODevice::WriteOnly);
+    if(!_encrypt){
         out << (quint16)0 << (quint8)20 << mess;
         out.device()->seek(0);
         out << (quint16)(block.size() - sizeof(quint16));
         _sok->write(block);
         qDebug()<<"отправлено"<<20<<" "<<mess<<"пользователю";
+    }
+    else
+    {
+        QVector <int> vec=encrypt(mess);
+        out << (quint16)0 << (quint8)21 <<vec;
+        qDebug()<<21<<vec;
+        out.device()->seek(0);
+        out << (quint16)(block.size() - sizeof(quint16));
+        _sok->write(block);
     }
 
 }
@@ -118,6 +195,19 @@ void client::readServ()
         case 2:
             in >>temp;
             emit getMessage(2,temp);
+            break;
+        case 21:
+        {
+            QVector <int> vec;
+            vec.resize(0);
+            in>>temp;
+            qDebug()<<temp;
+            in>>vec;
+            qDebug()<<vec;
+            temp+=decrypt(vec);
+            emit getMessage(20,temp);
+
+        }
             break;
 
         }
