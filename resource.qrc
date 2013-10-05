@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/icon">
+        <file>resource/icon/encrypt.ico</file>
+        <file>resource/icon/noEncrypt.ico</file>
+    </qresource>
+</RCC>

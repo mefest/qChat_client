@@ -35,6 +35,8 @@ private slots:
 
     void on_act_test_triggered();
 
+    void on_act_crypt_triggered();
+
 signals:
     void sendMessage(QString mess);
 

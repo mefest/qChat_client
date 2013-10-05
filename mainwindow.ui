@@ -244,7 +244,7 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <addaction name="act_sound"/>
    <addaction name="act_crypt"/>
@@ -306,6 +306,12 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/icon/resource/icon/encrypt.ico</normaloff>
+     <normalon>:/icon/resource/icon/noEncrypt.ico</normalon>
+     <disabledoff>:/icon/resource/icon/noEncrypt.ico</disabledoff>:/icon/resource/icon/encrypt.ico</iconset>
+   </property>
    <property name="text">
     <string>шифрование</string>
    </property>
@@ -325,7 +331,9 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>act_exit</sender>

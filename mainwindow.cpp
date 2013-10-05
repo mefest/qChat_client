@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //tcpSocket=new QTcpSocket(this);
 
     encrypt=false;
+    ui->act_crypt->setEnabled(false);
     ctx= new BLOWFISH_CTX;
 
     connect(tcpSocket,SIGNAL(connected()),this,SLOT(connectSucces()));
@@ -44,8 +45,21 @@ void MainWindow::connectToServer(QString name, QString addrServ, QString portSer
     if(!tcpSocket->getRuning())
     {
         qDebug()<<"hi"<<addrServ<<portServ;
-        if(key.length()>0 && key!="")
+        if(key.length()>6 && key!="")
+        {
             tcpSocket->_encrypt=true;
+            Blowfish_Init(ctx,&key,key.length());
+            tcpSocket->setCTX(ctx);
+            encrypt=true;
+            ui->act_crypt->setEnabled(true);
+            qDebug()<<"crypt on";
+
+        }
+        else
+        {
+            encrypt=false;
+            ui->act_crypt->setEnabled(false);
+        }
         tcpSocket->name=name;
         tcpSocket->connectTo(addrServ,(quint16) portServ.toInt());
         //tcpSocket->connectToHost(addrServ,(quint16) portServ.toInt());
@@ -54,15 +68,7 @@ void MainWindow::connectToServer(QString name, QString addrServ, QString portSer
     }
     else
         qDebug()<<"что то не так!";
-    if (key.length()>6)
-    {
-    Blowfish_Init(ctx,&key,key.length());
-    tcpSocket->setCTX(ctx);
-    encrypt=true;
-    qDebug()<<"crypt on";
-    }
-    else
-        encrypt=false;
+
 }
 
 void MainWindow::messageToGui(int kod, QString name, QString mess)
@@ -194,4 +200,11 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             ui->te_input->clear();
         }
     }
+}
+
+void MainWindow::on_act_crypt_triggered()
+{
+    tcpSocket->_encrypt=!tcpSocket->_encrypt;
+    qDebug()<<"encrypt"<<!tcpSocket->_encrypt;
+
 }

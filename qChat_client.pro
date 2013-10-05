@@ -16,12 +16,18 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     win_connect.cpp \
     client.cpp \
-    blowfish.cpp
+    blowfish.cpp \
+    settings.cpp
 
 HEADERS  += mainwindow.h \
     win_connect.h \
     client.h \
-    blowfish.h
+    blowfish.h \
+    settings.h
 
 FORMS    += mainwindow.ui \
-    win_connect.ui
+    win_connect.ui \
+    settings.ui
+
+RESOURCES += \
+    resource.qrc
