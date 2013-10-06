@@ -10,15 +10,6 @@ messInput::messInput(QWidget *parent) :
     //connect(this,SIGNAL(textChanged()),this,SLOT(paste()));
 }
 
-void messInput::paste()
-{
-//    qDebug()<<"paste";
-//    QString text=toPlainText();
-//    if(text.length()<256)
-//        setText(text);
-//    else setText(text.mid(0,255));
-}
-
 void messInput::keyPressEvent(QKeyEvent *event)
 {
 
@@ -57,7 +48,6 @@ void messInput::keyPressEvent(QKeyEvent *event)
 
 bool messInput::canInsertFromMimeData(const QMimeData *source) const
 {
-    qDebug()<<source->text().length();
     if(source->text().length()>256)
         return false;
     else return true;

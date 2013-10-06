@@ -14,7 +14,7 @@ public:
 signals:
     void giveText(QString text);
 public slots:
-    void paste();
+
 protected:
 
   virtual void 	keyPressEvent ( QKeyEvent * event );

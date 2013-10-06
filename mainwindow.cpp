@@ -104,6 +104,7 @@ void MainWindow::messageToGui(int kod, QString name, QString mess)
     }
     out->setTextColor(QColor(Qt::black));
     out->insertPlainText(mess+"\n");
+    out->moveCursor(QTextCursor::End);
 }
 
 void MainWindow::getMess(int i, QString mess)
