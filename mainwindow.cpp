@@ -7,6 +7,7 @@
 #include "win_connect.h"
 #include "client.h"
 #include "settings.h"
+#include "saveload.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -18,6 +19,11 @@ MainWindow::MainWindow(QWidget *parent) :
     tcpSocket= new client(this);
     myName =new QColor(Qt::blue);
     otherName =new QColor(Qt::magenta);
+    font= new QFont();
+    saveLoad *load= new saveLoad(this);
+    load->load(myName,otherName,font);
+    delete load;
+    ui->te_message->setFont(*font);
     //tcpSocket=new QTcpSocket(this);
 
     encrypt=false;
@@ -234,5 +240,11 @@ void MainWindow::on_actionPeerPOrt_triggered()
 void MainWindow::on_act_setting_triggered()
 {
     settings *set = new settings(this);
+    //обрати внимание
     set->exec();
+    saveLoad *load= new saveLoad(this);
+    load->load(myName,otherName,font);
+    delete load;
+    ui->te_message->setFont(*font);
+
 }

@@ -56,6 +56,7 @@ protected:
 private:
     QColor *myName;
     QColor *otherName;
+    QFont *font;
     client    *tcpSocket;
     Ui::MainWindow *ui;
 };

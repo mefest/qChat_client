@@ -18,14 +18,16 @@ SOURCES += main.cpp\
     client.cpp \
     blowfish.cpp \
     settings.cpp \
-    messinput.cpp
+    messinput.cpp \
+    saveload.cpp
 
 HEADERS  += mainwindow.h \
     win_connect.h \
     client.h \
     blowfish.h \
     settings.h \
-    messinput.h
+    messinput.h \
+    saveload.h
 
 FORMS    += mainwindow.ui \
     win_connect.ui \

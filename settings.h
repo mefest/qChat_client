@@ -14,6 +14,18 @@ class settings : public QDialog
 public:
     explicit settings(QWidget *parent = 0);
     ~settings();
+    QColor *myNick;
+    QColor *otherNick;
+    QFont *font;
+
+private slots:
+    void on_pb_myNick_clicked();
+
+    void on_pb_otherNick_clicked();
+
+    void on_pb_font_clicked();
+
+    void on_buttonBox_accepted();
 
 private:
     Ui::settings *ui;
