@@ -3,6 +3,9 @@
 
 #include <QObject>
 #include "blowfish.h"
+#include <QAbstractSocket>
+
+
 class QTcpSocket;
 
 class client : public QObject
@@ -16,10 +19,11 @@ public:
     bool getRuning() const {return runing;}
     void connectTo(QString addr, quint16 port);
     void closeConnection();
-    void send();
+    void send(quint8 cmd,QString mess);
     void setCTX(BLOWFISH_CTX *ctx);
     QString decrypt(QVector <int> vec);
     QVector<int> encrypt(QString str);
+    QTcpSocket *_sok;
 
 
 signals:
@@ -28,6 +32,7 @@ signals:
     void disconnected();
     void addUsers(QString name);
     void getMessage(int i,QString mess);
+    void displayError(QAbstractSocket::SocketError socketError);
 
 public slots:
     void inabled();
@@ -40,7 +45,7 @@ private:
     quint16 _blockSize;
 
 
-    QTcpSocket *_sok;
+
 
 };
 

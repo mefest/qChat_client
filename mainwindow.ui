@@ -266,6 +266,8 @@ min-height :24px;
    </attribute>
    <addaction name="act_sound"/>
    <addaction name="act_crypt"/>
+   <addaction name="act_getIp"/>
+   <addaction name="actionPeerPOrt"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="act_connect">
@@ -273,7 +275,7 @@ min-height :24px;
     <string>Соединение</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+C</string>
+    <string>Ctrl+W</string>
    </property>
    <property name="shortcutContext">
     <enum>Qt::WindowShortcut</enum>
@@ -281,7 +283,7 @@ min-height :24px;
   </action>
   <action name="act_setting">
    <property name="text">
-    <string>Настрнойки</string>
+    <string>Настройки</string>
    </property>
    <property name="toolTip">
     <string>Открыть окно настроек</string>
@@ -363,6 +365,22 @@ min-height :24px;
    </property>
    <property name="text">
     <string>Панель инструментов</string>
+   </property>
+  </action>
+  <action name="act_getIp">
+   <property name="text">
+    <string>узнать ип</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
+   </property>
+  </action>
+  <action name="actionPeerPOrt">
+   <property name="text">
+    <string>peerPOrt</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
  </widget>

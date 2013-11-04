@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "blowfish.h"
 #include "messinput.h"
+#include <QAbstractSocket>
 
 class QTcpSocket;
 class client;
@@ -31,6 +32,7 @@ private slots:
     void deleteUser(QString name);
     void on_act_connect_triggered();
     void getText(QString text);
+    void socError(QAbstractSocket::SocketError socketError);
 
 
     void on_act_disconnect_triggered();
@@ -38,6 +40,12 @@ private slots:
     void on_act_test_triggered();
 
     void on_act_crypt_triggered();
+
+    void on_act_getIp_triggered();
+
+    void on_actionPeerPOrt_triggered();
+
+    void on_act_setting_triggered();
 
 signals:
     void sendMessage(QString mess);

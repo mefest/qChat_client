@@ -1,10 +1,12 @@
 #include <QTcpSocket>
 #include <QDebug>
 #include <QTime>
+#include <QMessageBox>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "win_connect.h"
 #include "client.h"
+#include "settings.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -30,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(tcpSocket,SIGNAL(disconnected()),this,SLOT(on_act_disconnect_triggered()));
     connect(tcpSocket,SIGNAL(delUser(QString)),this,SLOT(deleteUser(QString)));
     connect(ui->te_input,SIGNAL(giveText(QString)),this,SLOT(getText(QString)));
+    connect(tcpSocket,SIGNAL(displayError(QAbstractSocket::SocketError)),this,SLOT(socError(QAbstractSocket::SocketError)));
 
     //<--here
 
@@ -60,7 +63,7 @@ void MainWindow::connectToServer(QString name, QString addrServ, QString portSer
             ui->act_crypt->setEnabled(false);
         }
         tcpSocket->name=name;
-        tcpSocket->connectTo(addrServ,(quint16) portServ.toInt());
+         tcpSocket->connectTo(addrServ,(quint16) portServ.toInt());
         //tcpSocket->connectToHost(addrServ,(quint16) portServ.toInt());
         ui->statusBar->showMessage("Подключаемся к "+addrServ);
     }
@@ -131,6 +134,7 @@ void MainWindow::inable()
 {
     messageToGui(1,"system","Соединение потеряно!\n");
     ui->statusBar->showMessage("Разрыв соединения");
+    ui->lw_users->clear();
     this->on_act_disconnect_triggered();
 }
 
@@ -161,6 +165,32 @@ void MainWindow::getText(QString text)
     emit sendMessage(text);
 }
 
+void MainWindow::socError(QAbstractSocket::SocketError socketError)
+{
+
+    switch (socketError) {
+    case QAbstractSocket::RemoteHostClosedError:
+        break;
+    case QAbstractSocket::HostNotFoundError:
+        QMessageBox::information(this, tr("QChat Client"),
+                                 tr("Хост не найден. Пожалуйста проверьте "
+                                    "настройки сервера."));
+        break;
+    case QAbstractSocket::ConnectionRefusedError:
+        QMessageBox::information(this, tr("QChat Client"),
+                                 tr("The connection was refused by the peer. "
+                                    "Убедитесь, что сервер запущен "
+                                    "и провельте адресс сервера и порт. "
+                                    "settings are correct."));
+        break;
+    default:
+        QMessageBox::information(this, tr("QChat Client"),
+                                 tr("The following error occurred: %1.")
+                                 .arg(tcpSocket->_sok->errorString()));
+    }
+
+}
+
 void MainWindow::on_act_disconnect_triggered()
 {
     if(tcpSocket->getRuning())
@@ -186,6 +216,23 @@ void MainWindow::on_act_test_triggered()
 void MainWindow::on_act_crypt_triggered()
 {
     tcpSocket->_encrypt=!tcpSocket->_encrypt;
-    qDebug()<<"encrypt"<<!tcpSocket->_encrypt;
+    qDebug()<<"encrypt"<<tcpSocket->_encrypt;
 
+}
+
+void MainWindow::on_act_getIp_triggered()
+{
+    tcpSocket->send(25,"ip");
+
+}
+
+void MainWindow::on_actionPeerPOrt_triggered()
+{
+   // tcpSocket->_sok->setPeerPort((quint16)ui->te_input->toPlainText().toInt());
+}
+
+void MainWindow::on_act_setting_triggered()
+{
+    settings *set = new settings(this);
+    set->exec();
 }

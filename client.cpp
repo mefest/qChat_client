@@ -1,6 +1,7 @@
 #include <QTcpSocket>
 #include <QDataStream>
-
+#include <QTcpServer>
+#include <QUdpSocket>
 
 #include "client.h"
 
@@ -13,29 +14,33 @@ client::client(QObject *parent) :
     connect(_sok,SIGNAL(connected()),this,SLOT(connectSucces()));
     connect(_sok,SIGNAL(disconnected()),this,SLOT(inabled()));
     connect(_sok,SIGNAL(readyRead()),this,SLOT(readServ()));
+    connect(_sok,SIGNAL(error(QAbstractSocket::SocketError)),this,SIGNAL(displayError(QAbstractSocket::SocketError)));
+    QUdpSocket *udp=new QUdpSocket(this);
+    udp->bind(QHostAddress::Any,(quint16)1024);
 
 }
 
 void client::connectTo(QString addr, quint16 port)
 {
     _sok->connectToHost(addr,port);
-    QByteArray block;
-    QDataStream out(&block, QIODevice::WriteOnly);
-    out << (quint16)0 << (quint8)0 << (QString)"AuthReq";
-    out.device()->seek(0);
-    out << (quint16)(block.size() - sizeof(quint16));
-    _sok->write(block);
-    block.clear();
-    out.device()->seek(0);
-    out << (quint16)0 << (quint8)1 <<name;
-    out.device()->seek(0);
-    out << (quint16)(block.size() - sizeof(quint16));
-    _sok->write(block);
+
 }
 
 void client::closeConnection()
 {
     _sok->close();
+}
+
+void client::send(quint8 cmd, QString mess)
+{
+    QByteArray block;
+    QDataStream out(&block, QIODevice::WriteOnly);
+    if(!_encrypt){
+        out << (quint16)0 << (quint8)cmd << mess;
+        out.device()->seek(0);
+        out << (quint16)(block.size() - sizeof(quint16));
+        _sok->write(block);
+    }
 }
 
 void client::setCTX(BLOWFISH_CTX *ctx)
@@ -141,6 +146,18 @@ void client::sendToServerMessage(QString mess)
 void client::connectSucces()
 {
     runing=true;
+    QByteArray block;
+    QDataStream out(&block, QIODevice::WriteOnly);
+    out << (quint16)0 << (quint8)0 << (QString)"AuthReq";
+    out.device()->seek(0);
+    out << (quint16)(block.size() - sizeof(quint16));
+    _sok->write(block);
+    block.clear();
+    out.device()->seek(0);
+    out << (quint16)0 << (quint8)1 <<name;
+    out.device()->seek(0);
+    out << (quint16)(block.size() - sizeof(quint16));
+    _sok->write(block);
     emit connected();
 }
 
@@ -209,6 +226,25 @@ void client::readServ()
 
         }
             break;
+        case 1:
+            in>>temp;
+            emit getMessage(1,"system>"+temp);
+            break;
+        case 25:
+            in>>temp;
+            qDebug()<<temp;
+
+            //_sok->setPeerPort(1025);
+            QTcpServer *serv= new QTcpServer(this);
+
+
+            if (!serv->listen(QHostAddress::Any,(quint16)temp.toInt()))
+            {
+                qDebug() << "Server not started at" ;
+
+            }
+            break;
+
 
         }
         qDebug()<<"---------------------";
