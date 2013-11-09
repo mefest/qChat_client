@@ -32,6 +32,7 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui \
     win_connect.ui \
     settings.ui
+RC_FILE = myicon.rc
 
 RESOURCES += \
     resource.qrc

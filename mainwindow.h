@@ -33,7 +33,8 @@ private slots:
     void on_act_connect_triggered();
     void getText(QString text);
     void socError(QAbstractSocket::SocketError socketError);
-
+    void closeEvent2();
+    void showEvent();
 
     void on_act_disconnect_triggered();
 
@@ -47,6 +48,8 @@ private slots:
 
     void on_act_setting_triggered();
 
+    void on_act_About_triggered();
+
 signals:
     void sendMessage(QString mess);
 
@@ -59,6 +62,8 @@ private:
     QFont *font;
     client    *tcpSocket;
     Ui::MainWindow *ui;
+    void closeEvent(QCloseEvent *eClose);
+    int closeid=0;
 };
 
 #endif // MAINWINDOW_H

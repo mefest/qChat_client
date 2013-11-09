@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>QChat v0.5</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resource.qrc">
+    <normaloff>:/icon/resource/icon/icon.ico</normaloff>:/icon/resource/icon/icon.ico</iconset>
+  </property>
   <property name="toolButtonStyle">
    <enum>Qt::ToolButtonIconOnly</enum>
   </property>

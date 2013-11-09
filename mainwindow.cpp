@@ -42,6 +42,20 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //<--here
 
+#ifdef Q_OS_WIN32
+    tray = new QSystemTrayIcon(QIcon(":/icon/resource/icon/icon.ico"),this);
+    tray->show();
+    QMenu *Menu = new QMenu(this);
+    QAction *showw = new QAction("Show", this);
+    connect(showw, SIGNAL(triggered()), this, SLOT(showEvent()));
+    QAction *quitAction = new QAction("Quit", this);
+    connect(quitAction, SIGNAL(triggered()), this, SLOT(closeEvent2()));
+    Menu->addAction(showw);
+    Menu->addAction(quitAction);
+    tray->setContextMenu(Menu);
+
+#endif
+
 }
 
 MainWindow::~MainWindow()
@@ -69,7 +83,7 @@ void MainWindow::connectToServer(QString name, QString addrServ, QString portSer
             ui->act_crypt->setEnabled(false);
         }
         tcpSocket->name=name;
-         tcpSocket->connectTo(addrServ,(quint16) portServ.toInt());
+        tcpSocket->connectTo(addrServ,(quint16) portServ.toInt());
         //tcpSocket->connectToHost(addrServ,(quint16) portServ.toInt());
         ui->statusBar->showMessage("Подключаемся к "+addrServ);
     }
@@ -168,7 +182,12 @@ void MainWindow::on_act_connect_triggered()
 
 void MainWindow::getText(QString text)
 {
-    emit sendMessage(text);
+    if(text!="")
+    {
+        if(text.length()>256)
+            text=text.mid(0,255);
+        emit sendMessage(text);
+    }
 }
 
 void MainWindow::socError(QAbstractSocket::SocketError socketError)
@@ -197,6 +216,17 @@ void MainWindow::socError(QAbstractSocket::SocketError socketError)
 
 }
 
+void MainWindow::closeEvent2()
+{
+    closeid=2;
+    this->close();
+}
+
+void MainWindow::showEvent()
+{
+    this->show();
+}
+
 void MainWindow::on_act_disconnect_triggered()
 {
     if(tcpSocket->getRuning())
@@ -221,7 +251,8 @@ void MainWindow::on_act_test_triggered()
 
 void MainWindow::on_act_crypt_triggered()
 {
-    tcpSocket->_encrypt=!tcpSocket->_encrypt;
+
+    tcpSocket->_encrypt=!ui->act_crypt->isChecked();
     qDebug()<<"encrypt"<<tcpSocket->_encrypt;
 
 }
@@ -234,7 +265,7 @@ void MainWindow::on_act_getIp_triggered()
 
 void MainWindow::on_actionPeerPOrt_triggered()
 {
-   // tcpSocket->_sok->setPeerPort((quint16)ui->te_input->toPlainText().toInt());
+    // tcpSocket->_sok->setPeerPort((quint16)ui->te_input->toPlainText().toInt());
 }
 
 void MainWindow::on_act_setting_triggered()
@@ -247,4 +278,28 @@ void MainWindow::on_act_setting_triggered()
     delete load;
     ui->te_message->setFont(*font);
 
+}
+
+void MainWindow::closeEvent(QCloseEvent *eClose)
+{
+#ifdef Q_OS_WIN32
+    if(closeid!=2){
+        this->hide();
+        eClose->ignore();
+    } else {
+        _serv->stopServer();
+        eClose->accept();
+    }
+#endif
+}
+
+void MainWindow::on_act_About_triggered()
+{
+    QMessageBox::information(this,"About","qChat\n"
+
+                             "Над прогораммой работали:\n"
+                             "Фролов Максим.\n"
+                             "Федоров Денис (иконка приложения).\n"
+
+                             "Если вы найдете ошибку или захотите связаться с автором - fral_@mail.ru");
 }
