@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network
+QT       += core gui network multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     blowfish.cpp \
     settings.cpp \
     messinput.cpp \
-    saveload.cpp
+    saveload.cpp \
+    voip.cpp
 
 HEADERS  += mainwindow.h \
     win_connect.h \
@@ -27,7 +28,8 @@ HEADERS  += mainwindow.h \
     blowfish.h \
     settings.h \
     messinput.h \
-    saveload.h
+    saveload.h \
+    voip.h
 
 FORMS    += mainwindow.ui \
     win_connect.ui \

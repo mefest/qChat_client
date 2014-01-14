@@ -40,6 +40,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->te_input,SIGNAL(giveText(QString)),this,SLOT(getText(QString)));
     connect(tcpSocket,SIGNAL(displayError(QAbstractSocket::SocketError)),this,SLOT(socError(QAbstractSocket::SocketError)));
 
+    createMenuUserList();
+
     //<--here
 
 #ifdef Q_OS_WIN32
@@ -61,6 +63,12 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::createMenuUserList()
+{
+    menuUsers = new QMenu(this);
+    menuUsers->addAction(ui->act_Call);
 }
 
 void MainWindow::connectToServer(QString name, QString addrServ, QString portServ, QString key)
@@ -259,7 +267,7 @@ void MainWindow::on_act_crypt_triggered()
 
 void MainWindow::on_act_getIp_triggered()
 {
-    tcpSocket->send(25,"ip");
+   // tcpSocket->send(25,"ip");
 
 }
 
@@ -302,4 +310,15 @@ void MainWindow::on_act_About_triggered()
                              "Федоров Денис (иконка приложения).\n"
 
                              "Если вы найдете ошибку или захотите связаться с автором - fral_@mail.ru");
+}
+
+void MainWindow::on_lw_users_customContextMenuRequested(const QPoint &pos)
+{
+    menuUsers->exec(ui->lw_users->mapToGlobal(pos));
+}
+
+void MainWindow::on_act_Call_triggered()
+{
+    if(ui->lw_users->count()>0)
+    tcpSocket->call(ui->lw_users->selectedItems().at(0)->text());
 }

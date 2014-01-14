@@ -149,6 +149,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="contextMenuPolicy">
+              <enum>Qt::CustomContextMenu</enum>
+             </property>
             </widget>
            </item>
           </layout>
@@ -385,6 +388,11 @@ min-height :24px;
    </property>
    <property name="visible">
     <bool>false</bool>
+   </property>
+  </action>
+  <action name="act_Call">
+   <property name="text">
+    <string>Call</string>
    </property>
   </action>
  </widget>

@@ -5,6 +5,7 @@
 
 #include "client.h"
 
+
 client::client(QObject *parent) :
     QObject(parent)
 {
@@ -48,6 +49,16 @@ void client::setCTX(BLOWFISH_CTX *ctx)
     client::ctx=ctx;
 }
 
+void client::call(QString name)
+{
+    QByteArray block;
+    QDataStream out(&block, QIODevice::WriteOnly);
+    out << (quint16)0 << (quint8)30<<name;
+    out.device()->seek(0);
+    out << (quint16)(block.size() - sizeof(quint16));
+    _sok->write(block);
+}
+
 QString client::decrypt(QVector<int> vec)
 {
     QString str;
@@ -79,6 +90,9 @@ QString client::decrypt(QVector<int> vec)
         str+=QChar(vec2[i]);
     return str;
 }
+
+
+
 
 QVector<int> client::encrypt(QString str)
 {
@@ -230,6 +244,24 @@ void client::readServ()
             in>>temp;
             emit getMessage(1,"system>"+temp);
             break;
+        case 31:
+        {
+            voipClient=new voip(0,_sok->peerAddress(),1034);
+            voipClient->start();
+            voipClient->init(name);
+            break;
+        }
+        case 32:
+        {
+            QHostAddress addr;
+            quint16 port;
+            in>>addr;
+            in>>port;
+            qDebug()<<addr<<port;
+            voipClient->setClient(addr,port);
+            voipClient->call();
+            break;
+        }
         case 25:
             in>>temp;
             qDebug()<<temp;

@@ -5,6 +5,8 @@
 #include "blowfish.h"
 #include <QAbstractSocket>
 
+#include "voip.h"
+
 
 class QTcpSocket;
 
@@ -21,9 +23,11 @@ public:
     void closeConnection();
     void send(quint8 cmd,QString mess);
     void setCTX(BLOWFISH_CTX *ctx);
+    void call(QString name);
     QString decrypt(QVector <int> vec);
     QVector<int> encrypt(QString str);
     QTcpSocket *_sok;
+    voip *voipClient;
 
 
 signals:
@@ -42,7 +46,7 @@ public slots:
 
 private:
     bool runing;
-    quint16 _blockSize;
+    quint16 _blockSize=0;
 
 
 

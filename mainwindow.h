@@ -21,6 +21,7 @@ public:
     ~MainWindow();
     BLOWFISH_CTX *ctx;
     bool encrypt;
+    void createMenuUserList();
 
 private slots:
     void connectToServer(QString name,QString addrServ,QString portServ, QString key);
@@ -50,6 +51,11 @@ private slots:
 
     void on_act_About_triggered();
 
+
+    void on_lw_users_customContextMenuRequested(const QPoint &pos);
+
+    void on_act_Call_triggered();
+
 signals:
     void sendMessage(QString mess);
 
@@ -61,6 +67,7 @@ private:
     QColor *otherName;
     QFont *font;
     client    *tcpSocket;
+    QMenu *menuUsers;
     Ui::MainWindow *ui;
     void closeEvent(QCloseEvent *eClose);
     int closeid=0;
