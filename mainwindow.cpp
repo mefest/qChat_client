@@ -102,6 +102,7 @@ void MainWindow::connectToServer(QString name, QString addrServ, QString portSer
 
 void MainWindow::messageToGui(int kod, QString name, QString mess)
 {
+
     QTextEdit *out= ui->te_message;
     out->moveCursor(QTextCursor::End);
     out->setTextBackgroundColor(Qt::white);
@@ -110,6 +111,7 @@ void MainWindow::messageToGui(int kod, QString name, QString mess)
     {
     case 1:
         qDebug()<<"system mess";
+        out->insertPlainText("sdfs");
         out->setTextBackgroundColor(QColor("red"));
         out->setTextColor(QColor(Qt::black));
         out->insertPlainText("<"+name+">");
@@ -137,6 +139,7 @@ void MainWindow::messageToGui(int kod, QString name, QString mess)
     out->setTextColor(QColor(Qt::black));
     out->insertPlainText(mess+"\n");
     out->moveCursor(QTextCursor::End);
+
 }
 
 void MainWindow::getMess(int i, QString mess)
@@ -157,6 +160,7 @@ void MainWindow::connectSucces()
     ui->wd_out->setEnabled(true);
     ui->te_input->setEnabled(true);
     ui->statusBar->showMessage("Подключение успешно");
+    ui->te_message->insertHtml("hisdddddddddddd");
 }
 
 void MainWindow::inable()
@@ -169,7 +173,8 @@ void MainWindow::inable()
 
 void MainWindow::addUsersToGui(QString name)
 {
-    ui->lw_users->addItem(name);
+    QListWidgetItem *newUser = new QListWidgetItem(QIcon(":/icon/resource/icon/user_black.ico"),name);
+    ui->lw_users->addItem(newUser);
 }
 
 void MainWindow::deleteUser(QString name)
@@ -268,7 +273,7 @@ void MainWindow::on_act_crypt_triggered()
 
 void MainWindow::on_act_getIp_triggered()
 {
-   // tcpSocket->send(25,"ip");
+    // tcpSocket->send(25,"ip");
 
 }
 
@@ -321,5 +326,5 @@ void MainWindow::on_lw_users_customContextMenuRequested(const QPoint &pos)
 void MainWindow::on_act_Call_triggered()
 {
     if(ui->lw_users->count()>0)
-    tcpSocket->call(ui->lw_users->selectedItems().at(0)->text());
+        tcpSocket->call(ui->lw_users->selectedItems().at(0)->text());
 }

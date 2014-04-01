@@ -4,5 +4,8 @@
         <file>resource/icon/noEncrypt.ico</file>
         <file>resource/icon/icon.ico</file>
         <file>resource/icon/icon32.ico</file>
+        <file>resource/icon/user_black.ico</file>
+        <file>resource/icon/user_cap.ico</file>
+        <file>resource/icon/user.ico</file>
     </qresource>
 </RCC>
