@@ -160,7 +160,7 @@ void MainWindow::connectSucces()
     ui->wd_out->setEnabled(true);
     ui->te_input->setEnabled(true);
     ui->statusBar->showMessage("Подключение успешно");
-    ui->te_message->insertHtml("hisdddddddddddd");
+
 }
 
 void MainWindow::inable()
