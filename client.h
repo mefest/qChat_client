@@ -5,8 +5,6 @@
 #include "blowfish.h"
 #include <QAbstractSocket>
 
-#include "voip.h"
-
 
 class QTcpSocket;
 
@@ -27,7 +25,6 @@ public:
     QString decrypt(QVector <int> vec);
     QVector<int> encrypt(QString str);
     QTcpSocket *_sok;
-    voip *voipClient;
 
 
 signals:

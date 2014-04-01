@@ -75,7 +75,6 @@ void MainWindow::connectToServer(QString name, QString addrServ, QString portSer
 {
     if(!tcpSocket->getRuning())
     {
-        qDebug()<<"hi"<<addrServ<<portServ;
         if(key.length()>6 && key!="")
         {
             tcpSocket->_encrypt=true;
@@ -90,6 +89,8 @@ void MainWindow::connectToServer(QString name, QString addrServ, QString portSer
             encrypt=false;
             ui->act_crypt->setEnabled(false);
         }
+        tcpSocket->_encrypt=false;
+        ui->act_crypt->setChecked(false);
         tcpSocket->name=name;
         tcpSocket->connectTo(addrServ,(quint16) portServ.toInt());
         //tcpSocket->connectToHost(addrServ,(quint16) portServ.toInt());
@@ -260,7 +261,7 @@ void MainWindow::on_act_test_triggered()
 void MainWindow::on_act_crypt_triggered()
 {
 
-    tcpSocket->_encrypt=!ui->act_crypt->isChecked();
+    tcpSocket->_encrypt=ui->act_crypt->isChecked();
     qDebug()<<"encrypt"<<tcpSocket->_encrypt;
 
 }

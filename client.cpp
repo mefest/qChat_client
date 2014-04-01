@@ -246,20 +246,12 @@ void client::readServ()
             break;
         case 31:
         {
-            voipClient=new voip(0,_sok->peerAddress(),1034);
-            voipClient->start();
-            voipClient->init(name);
+
             break;
         }
         case 32:
         {
-            QHostAddress addr;
-            quint16 port;
-            in>>addr;
-            in>>port;
-            qDebug()<<addr<<port;
-            voipClient->setClient(addr,port);
-            voipClient->call();
+
             break;
         }
         case 25:
