@@ -7,5 +7,7 @@
         <file>resource/icon/user_black.ico</file>
         <file>resource/icon/user_cap.ico</file>
         <file>resource/icon/user.ico</file>
+        <file>resource/icon/user_blue.ico</file>
+        <file>resource/icon/user_blue2.ico</file>
     </qresource>
 </RCC>

@@ -111,7 +111,6 @@ void MainWindow::messageToGui(int kod, QString name, QString mess)
     {
     case 1:
         qDebug()<<"system mess";
-        out->insertPlainText("sdfs");
         out->setTextBackgroundColor(QColor("red"));
         out->setTextColor(QColor(Qt::black));
         out->insertPlainText("<"+name+">");
@@ -173,7 +172,11 @@ void MainWindow::inable()
 
 void MainWindow::addUsersToGui(QString name)
 {
-    QListWidgetItem *newUser = new QListWidgetItem(QIcon(":/icon/resource/icon/user_black.ico"),name);
+    QListWidgetItem *newUser;
+    if (name==tcpSocket->name)
+        newUser = new QListWidgetItem(QIcon(":/icon/resource/icon/user_blue.ico"),name);
+    else
+        newUser = new QListWidgetItem(QIcon(":/icon/resource/icon/user_black.ico"),name);
     ui->lw_users->addItem(newUser);
 }
 
