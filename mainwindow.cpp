@@ -39,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(tcpSocket,SIGNAL(delUser(QString)),this,SLOT(deleteUser(QString)));
     connect(ui->te_input,SIGNAL(giveText(QString)),this,SLOT(getText(QString)));
     connect(tcpSocket,SIGNAL(displayError(QAbstractSocket::SocketError)),this,SLOT(socError(QAbstractSocket::SocketError)));
+    connect(tcpSocket,SIGNAL(displayListRoom(QStringList)),this,SLOT(displayRooms(QStringList)));
 
     createMenuUserList();
 
@@ -174,7 +175,10 @@ void MainWindow::addUsersToGui(QString name)
 {
     QListWidgetItem *newUser;
     if (name==tcpSocket->name)
+    {
         newUser = new QListWidgetItem(QIcon(":/icon/resource/icon/user_blue.ico"),name);
+        newUser->setBackgroundColor(QColor(146,146,146));
+    }
     else
         newUser = new QListWidgetItem(QIcon(":/icon/resource/icon/user_black.ico"),name);
     ui->lw_users->addItem(newUser);
@@ -242,6 +246,11 @@ void MainWindow::closeEvent2()
 void MainWindow::showEvent()
 {
     this->show();
+}
+
+void MainWindow::displayRooms(QStringList lstRoom)
+{
+    ui->listRoomWidget->addItems(lstRoom);
 }
 
 void MainWindow::on_act_disconnect_triggered()

@@ -36,6 +36,7 @@ private slots:
     void socError(QAbstractSocket::SocketError socketError);
     void closeEvent2();
     void showEvent();
+    void displayRooms(QStringList);
 
     void on_act_disconnect_triggered();
 

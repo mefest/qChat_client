@@ -34,6 +34,7 @@ signals:
     void addUsers(QString name);
     void getMessage(int i,QString mess);
     void displayError(QAbstractSocket::SocketError socketError);
+    void displayListRoom(QStringList);
 
 public slots:
     void inabled();

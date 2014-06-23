@@ -255,6 +255,7 @@ void client::readServ()
             break;
         }
         case 25:
+        {
             in>>temp;
             qDebug()<<temp;
 
@@ -268,6 +269,15 @@ void client::readServ()
 
             }
             break;
+        }
+
+        case 40:
+        {
+            QStringList lstRoom;
+            in>>lstRoom;
+            emit displayListRoom(lstRoom);
+            break;
+        }
 
 
         }
