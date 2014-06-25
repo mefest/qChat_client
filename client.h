@@ -16,6 +16,7 @@ public:
     bool _encrypt;
     BLOWFISH_CTX *ctx;
     explicit client(QObject *parent = 0);
+    ~client();
     bool getRuning() const {return runing;}
     void connectTo(QString addr, quint16 port);
     void closeConnection();
@@ -44,7 +45,7 @@ public slots:
 
 private:
     bool runing;
-    quint16 _blockSize=0;
+    quint16 _blockSize;
 
 
 

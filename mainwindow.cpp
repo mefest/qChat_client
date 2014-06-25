@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->tabWidget->removeTab(1);
     ui->mainToolBar->hide();
+    closeid=0;
     tcpSocket= new client(this);
     myName =new QColor(Qt::blue);
     otherName =new QColor(Qt::magenta);
@@ -64,6 +65,12 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete myName;
+    delete otherName;
+    delete font;
+    delete ctx;
+
+
 }
 
 void MainWindow::createMenuUserList()
@@ -177,7 +184,7 @@ void MainWindow::addUsersToGui(QString name)
     if (name==tcpSocket->name)
     {
         newUser = new QListWidgetItem(QIcon(":/icon/resource/icon/user_blue.ico"),name);
-        newUser->setBackgroundColor(QColor(146,146,146));
+        //        newUser->setBackgroundColor(QColor(146,146,146));
     }
     else
         newUser = new QListWidgetItem(QIcon(":/icon/resource/icon/user_black.ico"),name);
@@ -299,10 +306,12 @@ void MainWindow::on_act_setting_triggered()
     settings *set = new settings(this);
     //обрати внимание
     set->exec();
+    set->deleteLater();
     saveLoad *load= new saveLoad(this);
     load->load(myName,otherName,font);
-    delete load;
+    qDebug()<<*font<<ui->te_message->font();
     ui->te_message->setFont(*font);
+    delete load;
 
 }
 

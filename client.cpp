@@ -9,8 +9,9 @@
 client::client(QObject *parent) :
     QObject(parent)
 {
+    _blockSize=0;
     runing=false;
-    ctx=new BLOWFISH_CTX;
+//    ctx=new BLOWFISH_CTX;
     _sok=new QTcpSocket(this);
     connect(_sok,SIGNAL(connected()),this,SLOT(connectSucces()));
     connect(_sok,SIGNAL(disconnected()),this,SLOT(inabled()));
@@ -173,6 +174,11 @@ void client::connectSucces()
     out << (quint16)(block.size() - sizeof(quint16));
     _sok->write(block);
     emit connected();
+}
+
+client::~client()
+{
+// delete ctx;
 }
 
 void client::readServ()

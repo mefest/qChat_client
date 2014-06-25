@@ -55,9 +55,10 @@ bool messInput::canInsertFromMimeData(const QMimeData *source) const
 
 void messInput::insertFromMimeData(const QMimeData *source)
 {
-    if(source->hasText())
+    if(source->hasText()){
         if(source->text().length()>256)
             insertPlainText(source->text().mid(0,255));
-    else insertPlainText(source->text());
+        else insertPlainText(source->text());
+    }
 }
 

@@ -10,6 +10,7 @@ class saveLoad : public QObject
     Q_OBJECT
 public:
     explicit saveLoad(QObject *parent = 0);
+    ~saveLoad();
 
     QColor *_my;
     QColor *_other;

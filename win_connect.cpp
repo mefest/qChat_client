@@ -10,18 +10,17 @@ win_connect::win_connect(QWidget *parent) :
     saveLoad *load=new saveLoad(this);
     QString name, server,port,key;
     load->loadS(&name,&server,&port,&key);
+    delete load;
     ui->ln_name->setText(name);
     ui->ln_addr->setText(server);
     ui->ln_port->setText(port);
     ui->te_key->setText(key);
 
-    delete load;
 }
 
 win_connect::~win_connect()
 {
     delete ui;
-
 
 }
 

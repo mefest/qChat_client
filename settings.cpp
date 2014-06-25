@@ -29,6 +29,9 @@ settings::settings(QWidget *parent) :
 settings::~settings()
 {
     delete ui;
+    delete myNick;
+    delete font;
+    delete otherNick;
 }
 
 void settings::on_pb_myNick_clicked()
@@ -62,7 +65,7 @@ void settings::on_pb_font_clicked()
     *font = QFontDialog::getFont(&ok, *font,this,"Выберите шрифт");
     if (ok) {
 
-        //  text->setFont(font);
+//          text->setFont(font);
     } else{
         // the user canceled the dialog; font is set to the initial
         // value, in this case Times, 12.
@@ -74,4 +77,5 @@ void settings::on_buttonBox_accepted()
     qDebug()<<"Hажата ок";
     saveLoad *save =new saveLoad(this);
     save->save(myNick,otherNick,font);
+    delete save;
 }

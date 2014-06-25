@@ -13,6 +13,13 @@ saveLoad::saveLoad(QObject *parent) :
     _font =new QFont();
 }
 
+saveLoad::~saveLoad()
+{
+    delete _my;
+    delete _other;
+    delete _font;
+}
+
 void saveLoad::save(QColor *my, QColor *other, QFont *font)
 {
     QFile file("settings.dat");

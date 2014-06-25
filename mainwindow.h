@@ -71,7 +71,7 @@ private:
     QMenu *menuUsers;
     Ui::MainWindow *ui;
     void closeEvent(QCloseEvent *eClose);
-    int closeid=0;
+    int closeid;
 };
 
 #endif // MAINWINDOW_H
