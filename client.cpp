@@ -5,6 +5,8 @@
 
 #include "client.h"
 
+#define ALIVE_TIME 50000
+
 
 client::client(QObject *parent) :
     QObject(parent)
@@ -132,6 +134,7 @@ void client::inabled()
 {
     emit disconnected();
     runing=false;
+    disconnect(&timer,SIGNAL(timeout()),this,SLOT(sendAlive()));
 
 }
 
@@ -173,6 +176,9 @@ void client::connectSucces()
     out.device()->seek(0);
     out << (quint16)(block.size() - sizeof(quint16));
     _sok->write(block);
+    timer.start(ALIVE_TIME);
+    connect(&timer,SIGNAL(timeout()),this,SLOT(sendAlive()));
+
     emit connected();
 }
 
@@ -290,4 +296,9 @@ void client::readServ()
         qDebug()<<"---------------------";
         _blockSize = 0;
     }
+}
+
+void client::sendAlive()
+{
+    this->send(10,"alive");
 }

@@ -5,6 +5,7 @@
 #include "blowfish.h"
 #include "messinput.h"
 #include <QAbstractSocket>
+#include <QSystemTrayIcon>
 
 class QTcpSocket;
 class client;
@@ -72,6 +73,7 @@ private:
     Ui::MainWindow *ui;
     void closeEvent(QCloseEvent *eClose);
     int closeid;
+    QSystemTrayIcon *tray;
 };
 
 #endif // MAINWINDOW_H

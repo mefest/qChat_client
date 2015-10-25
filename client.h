@@ -4,6 +4,7 @@
 #include <QObject>
 #include "blowfish.h"
 #include <QAbstractSocket>
+#include <QTimer>
 
 
 class QTcpSocket;
@@ -42,10 +43,12 @@ public slots:
     void sendToServerMessage(QString mess);
     void connectSucces();
     void readServ();
+    void sendAlive();
 
 private:
     bool runing;
     quint16 _blockSize;
+    QTimer timer;
 
 
 
